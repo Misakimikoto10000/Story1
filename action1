@@ -1,0 +1,99 @@
+import random
+monster = ['hp',50,'atk',10,'def',2,'MP','?']
+boss = ['hp',500,'atk',18,'def',5]
+me = ['hp',40,'atk',12,'def',4,'MP',20]
+i = 1
+j = 2
+bag = ("小型恢复剂:1(可以恢复50点HP,按1使用)  火焰附魔卷轴:1(使你的武器获得火焰附魔，按2使用)")
+print("你在灰暗的地道中前行，此时前方出现了两条岔路。")
+while i:
+    temp = input("请选择向左或向右走: ")
+    if '左' in temp or '向左' in temp:
+        print("在你向左边通道前行6分钟后，忽然有一只哥布林向你冲来！！战斗开始")
+        while j  > 0:
+            if monster[1] <= 0:
+                print("你击杀了哥布林")
+                break
+            elif me[1] <=0:
+                print("你被哥布林杀死，游戏结束")
+                #如何使整个程序结束
+                break
+            battle = input("战斗进行中，请输入攻击，背包，状态或逃跑：")
+            #选择了逃跑，会进行随机的速度测试来看看能不能成功逃跑
+            if '逃跑' in battle:
+                my_speed = random.randint(2,30)
+                monster_speed = random.randint(10,20)
+                if my_speed > monster_speed:
+                    print("逃跑成功，你将哥布林远远甩在后面。")
+                    break
+                else:
+                    me[1] = me[1] - monster[3] 
+                    print("逃跑失败，哥布林使用了挥击，对你造成了" + str(monster[3])+ "点伤害！")
+            #选择背包，可使用道具
+            #如何把bag字符串内的物品永久删除？？
+                    
+            elif '背包' in battle:
+                battle = input(bag + ",输入其他继续战斗:")
+                if bag == ():
+                    print("你已没有道具，请重新选择！")
+                    continue
+                elif '1' in battle:
+                    print("你使用了小型恢复剂并恢复了50点HP！")
+                    me[1] = me[1] + 50
+                    bag = ("火焰附魔卷轴:1(使你的武器获得火焰附魔,按2使用)")
+                    continue
+                
+                elif '2' in battle:
+                    print("你使用了火焰附魔卷轴，你的武器永久获得5点攻击力！")
+                    me[3] = me[3] + 5
+                    bag = ("小型恢复剂:1(可以恢复50点HP,按2使用)")
+                    continue
+                else:
+                    continue
+            #选择战斗，可使用普通攻击或技能，技能mp不足无法使用  
+            elif '战斗' in battle or '攻击' in battle:
+                battle = input("按1使用挥砍，按2使用盾击(消耗5MP)，按3使用必杀技(消耗10MP)：")
+                if '1' in battle:                    
+                    monster[1] = monster[1] - me[3]
+                    print("你对哥布林使用了挥砍，对它造成了" + str(me[3])+ "点伤害！")
+                    me[1] = me[1] - monster[3]
+                    print("哥布林使用了挥砍，对你造成了" + str(monster[3])+ "点伤害！")
+                    continue
+                elif '2' in battle:
+                    if me[7] <= 0:
+                        print("MP不足，请重新选择！")
+                        continue
+                    else:
+                        monster[1] = monster[1] - me[3] - 4 
+                        print("你对哥布林使用了盾击，对它造成了" + str(me[3]+4)+ "点伤害！")
+                        me[1] = me[1] - monster[3]
+                        print("哥布林使用了挥砍，对你造成了" + str(monster[3])+ "点伤害！")
+                        me[7] -= 5
+                elif '3' in battle:
+                    if me[7] <= 0:
+                        print("MP不足，请重新选择！")
+                        continue
+                    else:
+                        monster[1] = monster[1] - me[3] - 10 
+                        print("你对哥布林使用了必杀技，对它造成了" + str(me[3]+10)+ "点伤害！")
+                        me[1] = me[1] - monster[3]
+                        print("哥布林使用了挥砍，对你造成了" + str(monster[3])+ "点伤害！")
+                        me[7] -= 10
+                else:
+                    print("输入错误，请重新选择")
+                    continue
+            #查看状态
+            elif '状态' in battle:
+                print("你的当前HP：" + str(me[1]) + ", MP:"+ str(me[7]) + '\n哥布林当前HP：'+ str(monster[1]))
+                continue
+
+            else:
+                print("输入错误，请重新选择")
+                continue       
+    elif '右' in temp or '向右' in temp:
+        print("在前行半小时后，你成功走出隧道。游戏结束！")
+    else:
+        print("输入错误，请重新开始。")
+        continue
+
+    i -= 1
